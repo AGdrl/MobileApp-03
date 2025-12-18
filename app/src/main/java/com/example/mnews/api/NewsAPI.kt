@@ -8,24 +8,20 @@ import retrofit2.http.Query
 
 interface NewsAPI {
 
+    // EU-focused breaking news (Lithuania default)
     @GET("v2/top-headlines")
     suspend fun getBreakingNews(
-        @Query("country")
-        countryCode : String="us",
-        @Query("page")
-        pageNumber : Int=1,
-        @Query("apiKey")
-        apiKey: String=API_KEY
-    ) : Response<NewsResponse>
+        @Query("country") countryCode: String = "lt",
+        @Query("page") pageNumber: Int = 1,
+        @Query("apiKey") apiKey: String = API_KEY
+    ): Response<NewsResponse>
 
-
+    // Global search (NewsAPI 'everything' endpoint does NOT support country)
     @GET("v2/everything")
     suspend fun searchForNews(
-        @Query("q")
-        searchQuery : String,
-        @Query("page")
-        pageNumber : Int=1,
-        @Query("apiKey")
-        apiKey: String=API_KEY
-    ) : Response<NewsResponse>
+        @Query("q") searchQuery: String,
+        @Query("language") language: String = "en", // keep search global & readable
+        @Query("page") pageNumber: Int = 1,
+        @Query("apiKey") apiKey: String = API_KEY
+    ): Response<NewsResponse>
 }

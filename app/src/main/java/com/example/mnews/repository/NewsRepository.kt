@@ -7,16 +7,33 @@ import com.example.mnews.models.Article
 class NewsRepository(
     val db: ArticleDatabase
 ) {
-    suspend fun getBreakingNews(countryCode : String,pageNumber : Int) =
-        RetrofitInstance.api.getBreakingNews(countryCode,pageNumber)
 
-    suspend fun searchNews(searchQuery: String, pageNumber: Int) =
-        RetrofitInstance.api.searchForNews(searchQuery, pageNumber)
+    // EU-focused breaking news
+    suspend fun getBreakingNews(
+        countryCode: String = "de",
+        pageNumber: Int = 1
+    ) =
+        RetrofitInstance.api.getBreakingNews(
+            countryCode = countryCode,
+            pageNumber = pageNumber
+        )
 
-    suspend fun upsert(article: Article) = db.getArticleDao().upsert(article)
+    // Global search (country not supported by 'everything' endpoint)
+    suspend fun searchNews(
+        searchQuery: String,
+        pageNumber: Int = 1
+    ) =
+        RetrofitInstance.api.searchForNews(
+            searchQuery = searchQuery,
+            pageNumber = pageNumber
+        )
 
-    fun getSavedNews() = db.getArticleDao().getAllArticles()
+    suspend fun upsert(article: Article) =
+        db.getArticleDao().upsert(article)
 
-    suspend fun deleteArticle(article: Article) = db.getArticleDao().deleteArticle(article)
+    fun getSavedNews() =
+        db.getArticleDao().getAllArticles()
 
+    suspend fun deleteArticle(article: Article) =
+        db.getArticleDao().deleteArticle(article)
 }
